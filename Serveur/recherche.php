@@ -21,7 +21,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
   $context = stream_context_create($opts);
 
   switch ($quoi){
-    case "f" : if (isset($_GET["titre"])){
+    case "f" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
                   $retour = file_get_contents('http://api.betaseries.com/movies/search?title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
                   retourFilm($retour);
                 }else{
@@ -70,7 +70,8 @@ function retourFilm($data){// formatage du JSON pour le client
       $jsonClient .= '"date_sortie_f":"'.$json->{'movies'}[$i]->{'release_date'}.'",';
       $jsonClient .= '"duree_f":"'.$json->{'movies'}[$i]->{'length'}.'",';
       $jsonClient .= '"synopsis_f":"'.str_replace('"', '\"', $json->{'movies'}[$i]->{'synopsis'}).'",';
-      $jsonClient .= '"langue_f":"'.$json->{'movies'}[$i]->{'language'}.'"';
+      $jsonClient .= '"langue_f":"'.$json->{'movies'}[$i]->{'language'}.'",';
+      $jsonClient .= '"realisateur_f":"'.$json->{'movies'}[$i]->{'director'}.'"';
       $jsonClient .= '}';
   }
   $jsonClient .= ']}';

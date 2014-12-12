@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<script type="text/javascript">
+	page="Recherche";
+</script>
+<script type="text/javascript" src="header.js"></script>
+<!-- on appelle jquery -->
+<!-- le code jquery -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		//à la modification du champs recherche
+		$("#recherche").keyup(function(){
+			var req=$(this).attr("value");
+			//requête ajax, appel du fichier recherche_ajax.php
+			$.ajax({
+				
+				type: "GET",
+				url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre="+req,
+				dataType : "html",
+				contentType: 'Content-type: text/plain; charset=iso-8859-15',
+			    // This is the imporant part!!!
+			    beforeSend: function(jqXHR) {
+			        jqXHR.overrideMimeType('text/html;charset=iso-8859-15');
+			    },
+				success:function(data){
+					//alert(data);
+					// on met à jour le div suggest avec les données reçus
+					$("#suggest").empty();
+					$("#suggest").append(data);
+				}
+			});
+		});
+	})
+</script>
+
+<!-- #navigation -->
+	<div id="contenu">
+		<h2>Recherche</h2>
+		Rechercher un film ou une s&eacute;rie: <input type="text" id="recherche">
+	
+		<div id="suggest">
+		</div> 
+		
+	</div><!-- #contenu -->
+<script type="text/javascript" src="footer.js"></script>
