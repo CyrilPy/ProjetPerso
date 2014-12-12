@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>57524D2F-5E8E-4925-AC4A-EB2230D43559</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Seen</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>910128B5990220C51D445E8862D47776B3C8FC0D</key>
+		<string>https://github.com/Python15/ProjetPerso.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Client Mobile/Seen/Seen.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>910128B5990220C51D445E8862D47776B3C8FC0D</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Python15/ProjetPerso.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>910128B5990220C51D445E8862D47776B3C8FC0D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>910128B5990220C51D445E8862D47776B3C8FC0D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ProjetPerso</string>
+		</dict>
+	</array>
+</dict>
+</plist>
