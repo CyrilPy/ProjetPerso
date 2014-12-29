@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+
+	<title>Seen | Connexion</title>
+	<!-- La feuille de styles "base.css" doit être appelée en premier. -->
+	<link rel="stylesheet" type="text/css" href="css/base.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="css/modele04.css" media="screen" />
+
+
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<style type="text/css">
+	#monForm {
+	   position:absolute;
+	   top:50%;
+	   left:50%;
+	   width:300px; /* A toi de donner la bonne largeur */
+	   height:200px; /* A toi de donner la bonne hauteur */
+	   margin-left:-150px; /* -largeur/2 */
+	   margin-top:-100px; /* -hauteur/2 */
+	}
+</style>
+</header>
+<body>
+	<div id="global">
+	<div id="entete">
+	<h1>Seen</h1>
+	<p class="sous-titre">Pour toujours garder un <strong>oeil</strong> sur ses <strong>films</strong> et <strong>s&eacute;ries</strong> pr&eacute;f&eacute;r&eacute;s ...</p>
+	</div><!-- #entete -->
+
+	<form id="monForm">
+		<table>
+			<tr>
+				<td colspan="2" align="center">
+					<table id="tabCon">
+						<tr>
+							<td>Pseudo:</td>
+							<td><input type="text" id="pseudoCon"></td>
+						</tr>
+						<tr>
+							<td>Mot de passe:</td>
+							<td><input type="password" id="mdpCon"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center"><input type="button" onclick="verifCon();" value="Envoyer"></td>
+						</tr>
+					</table>
+					<table id="tabEnr" style="display:none;">
+						<tr>
+							<td>Nom:</td>
+							<td><input type="text" id="nom"></td>
+						</tr>
+						<tr>
+							<td>Pr&eacute;nom:</td>
+							<td><input type="text" id="prenom"></td>
+						</tr>
+						<tr>
+							<td>Mail:</td>
+							<td><input type="text" id="mail"></td>
+						</tr>
+						<tr>
+							<td>Pseudo:</td>
+							<td><input type="text" id="pseudo"></td>
+						</tr>
+						<tr>
+							<td>Mot de passe:</td>
+							<td><input type="password" id="mdp"></td>
+						</tr>
+						<tr>
+							<td>Confirmation:</td>
+							<td><input type="password" id="mdp2"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center"><input type="button" onclick="verifEnr();" value="Envoyer"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a onclick='afficheForm("cr")'>Cr&eacute;er un compte</a>
+				</td>
+				<td>
+					<a onclick='afficheForm("co")'>Se connecter</a>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script type="text/javascript">
+	valide = 1;
+	function afficheForm (param){
+		if (param == "cr"){
+			$("#tabCon").fadeOut("fast", function(){$("#tabEnr").fadeIn("fast")});
+		}else{
+			$("#tabEnr").fadeOut("fast", function(){$("#tabCon").fadeIn("fast")});
+		}
+	}
+
+	$(document).ready(function() {
+		$("#mdp2").keyup(function(){
+			var mdp=$("#mdp").attr("value");
+			var mdp2=$(this).attr("value");
+
+			if (mdp != mdp2){
+				$(this).css("background-color","#FFB6B8");//rouge
+				valide=1;
+			}else{
+				$(this).css("background-color", "#B5E655");//vert
+				valide=0;
+			}
+		});
+
+		$("#mail").keyup(function(){
+			var mail=$(this).attr("value");
+			var reg = new RegExp('^[a-z0-9]+([_|\.|-]{1}[a-z0-9]+)*@[a-z0-9]+([_|\.|-]{1}[a-z0-9]+)*[\.]{1}[a-z]{2,6}$', 'i');
+			if(reg.test(mail))
+			{
+				$(this).css("background-color", "#B5E655");//vert
+				valide=0;
+			}
+			else
+			{
+				$(this).css("background-color","#FFB6B8");//rouge
+				valide = 1;
+			}
+		});
+
+		$("#nom").focusout(function(){
+			var nom=$(this).attr("value");
+			if(nom != "")
+			{
+				$(this).css("background-color", "#B5E655");//vert
+				valide = 0;
+			}
+			else
+			{
+				$(this).css("background-color","#FFB6B8");//rouge
+				valide = 1;
+			}
+		});
+
+		$("#prenom").focusout(function(){
+			var prenom=$(this).attr("value");
+			if(prenom != "")
+			{
+				$(this).css("background-color", "#B5E655");//vert
+				valide = 0;
+			}
+			else
+			{
+				$(this).css("background-color","#FFB6B8");//rouge
+				valide = 1;
+			}
+		});
+
+		$("#pseudo").keyup(function(){
+			var pseudo=$(this).attr("value");
+			$.ajax({
+				type: "GET",
+				url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=m&pseudo="+pseudo,
+				dataType : "html",
+				contentType: 'Content-type: text/plain; charset=iso-8859-15',
+				success:function(data){
+					json = JSON.parse(data);
+
+					if (json.membre.length == "0"){
+						$("#pseudo").css("background-color", "#B5E655");//vert
+						valide = 0;
+					}else{
+						$("#pseudo").css("background-color","#FFB6B8");//rouge
+						valide = 1;
+					}
+				}
+			});
+		});
+	});
+function verifCon (){
+	if ($("#pseudoCon").attr("value") != "" && $("#mdpCon").attr("value") != "" ){
+			$.ajax({
+				type: "GET",
+				url: "http://perso.imerir.com/cpy/Seen/connexion.php?pseudo="+$("#pseudoCon").attr("value")+"&mdp="+$("#mdpCon").attr("value"),//---------------------------------------------------
+				dataType : "html",
+				contentType: 'Content-type: text/plain; charset=iso-8859-15',
+				success:function(data){
+					if (data == 1){
+						alert("Bienvenue dans Seen !");
+						document.location.href="index.html";
+					}else{
+						alert("Les informations que vous avez renseignées sont incorrectes.");
+						document.location.href="connexion.html";
+					}
+				}
+			});
+		}else{
+			alert("Veuillez renseigner tous les champs correctement.");
+		}
+}
+	function verifEnr(){
+		if (valide == 0 && $("#nom").attr("value") != "" && $("#prenom").attr("value") != "" && $("#mail").attr("value") != "" && $("#pseudo").attr("value") != "" && $("#mdp").attr("value") != "" && $("#mdp2").attr("value") != ""){
+
+			$.ajax({
+				type: "GET",
+				url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi=m&nom="+$("#nom").attr("value")+"&prenom="+$("#prenom").attr("value")+"&mail="+$("#mail").attr("value")+"&pseudo="+$("#pseudo").attr("value")+"&mdp="+$("#mdp").attr("value"),
+				dataType : "html",
+				contentType: 'Content-type: text/plain; charset=iso-8859-15',
+				success:function(data){
+					alert("Le compte à bien été créé.");
+					document.location.href="connexion.html";
+				}
+			});
+		}else{
+			alert("Veuillez renseigner tous les champs correctement.");
+		}
+	}
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

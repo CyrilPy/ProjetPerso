@@ -38,7 +38,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
     case "m" : if (isset($_GET["pseudo"]) && $_GET["pseudo"] != ''){
                     try{
                       $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
-                      $retour = $req->query('SELECT * FROM membre WHERE pseudo_mbr LIKE "%'.$_GET["pseudo"].'%"'); // requete sur la base de données
+                      $retour = $req->query('SELECT * FROM membre WHERE pseudo_mbr = "'.$_GET["pseudo"].'"'); // requete sur la base de données
 
                       retourMembre($retour);
                     }catch (PDOException $e) {
@@ -102,24 +102,25 @@ function retourSerie($data){// formatage du JSON pour le client
 }
 
 function retourMembre($data){ // formatage du JSON pour le client
-  $jsonClient = '{"membre":[';
-  $i = 0;
-  foreach($data as $row) {
-      if ($i != 0){
-        $jsonClient .= ',';
-      }
-      $jsonClient .= '{';
-      $jsonClient .= '"id_mbr":"'.$row["id_mbr"].'",';
-      $jsonClient .= '"nom_mbr":"'.$row["nom_mbr"].'",';
-      $jsonClient .= '"prenom_mbr":"'.$row["prenom_mbr"].'",';
-      $jsonClient .= '"pseudo_mbr":"'.$row["pseudo_mbr"].'",';
-      $jsonClient .= '"mail_mbr":"'.$row["mail_mbr"].'"';
-      $jsonClient .= '}';
 
-      $i++;
-  }
-  $jsonClient .= ']}';
+    $jsonClient = '{"membre":[';
+    $i = 0;
+    foreach($data as $row) {
+        if ($i != 0){
+          $jsonClient .= ',';
+        }
+        $jsonClient .= '{';
+        $jsonClient .= '"id_mbr":"'.$row["id_mbr"].'",';
+        $jsonClient .= '"nom_mbr":"'.$row["nom_mbr"].'",';
+        $jsonClient .= '"prenom_mbr":"'.$row["prenom_mbr"].'",';
+        $jsonClient .= '"pseudo_mbr":"'.$row["pseudo_mbr"].'",';
+        $jsonClient .= '"mail_mbr":"'.$row["mail_mbr"].'"';
+        $jsonClient .= '}';
 
+        $i++;
+    }
+    $jsonClient .= ']}';
+  
   echo $jsonClient; 
 }
 ?>
