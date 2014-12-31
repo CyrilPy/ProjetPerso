@@ -1,7 +1,8 @@
 <?php 
 
-if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
+if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"]) && isset($_GET["qui"])){
   $quoi = $_GET["quoi"];
+  $qui = $_GET["qui"];
   $retour = '';
     // Création d'un flux pour connexion à BetaSeries
   $opts = array(
@@ -10,7 +11,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
       'header'=>"X-BetaSeries-Key: 4efa6075b15d\r\n".
                 "X-BetaSeries-Version: 2.3\r\n".
                 "Accept: application/json\r\n".
-                "User-agent: Seen\r\n"
+                "User-agent: Seen-".$qui."\r\n"
     )
   );
   // Données nécessaires à la connexion à la BDD
@@ -22,14 +23,14 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
 
   switch ($quoi){
     case "f" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
-                  $retour = file_get_contents('http://api.betaseries.com/movies/search?title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
+                  $retour = file_get_contents('http://api.betaseries.com/movies/search?nbpp=10&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
                   retourFilm($retour);
                 }else{
                   header("HTTP/1.0 400 Bad Request");
                 };
     break;
     case "s" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
-                  $retour = file_get_contents('http://api.betaseries.com/shows/search?title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
+                  $retour = file_get_contents('http://api.betaseries.com/shows/search?nbpp=10&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
                   retourSerie($retour);
                 }else{
                   header("HTTP/1.0 400 Bad Request");
@@ -56,6 +57,8 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' &&  !is_null($_GET["quoi"])){
 }
  
 function retourFilm($data){// formatage du JSON pour le client
+  $data = str_replace("\\n","",$data);
+  $data = str_replace("\\r","",$data);
   $json = json_decode($data);
 
   $jsonClient = '{"film":[';
@@ -80,6 +83,8 @@ function retourFilm($data){// formatage du JSON pour le client
 }
 
 function retourSerie($data){// formatage du JSON pour le client
+  $data = str_replace("\\n","",$data);
+  $data = str_replace("\\r","",$data);
   $json = json_decode($data);
 
   $jsonClient = '{"serie":[';
@@ -91,6 +96,8 @@ function retourSerie($data){// formatage du JSON pour le client
       $jsonClient .= '"id_bs_s":"'.$json->{'shows'}[$i]->{'id'}.'",';
       $jsonClient .= '"titre_s":"'.str_replace('"', '\"', $json->{'shows'}[$i]->{'title'}).'",';
       $jsonClient .= '"synopsis_s":"'.str_replace('"', '\"', $json->{'shows'}[$i]->{'description'}).'",';
+      $jsonClient .= '"nb_saison_s":"'.$json->{'shows'}[$i]->{'seasons'}.'",';
+      $jsonClient .= '"nb_episode_s":"'.$json->{'shows'}[$i]->{'episodes'}.'",';
       $jsonClient .= '"date_debut_s":"'.$json->{'shows'}[$i]->{'creation'}.'",';
       $jsonClient .= '"langue_s":"'.$json->{'shows'}[$i]->{'language'}.'",';
       $jsonClient .= '"statut_s":"'.$json->{'shows'}[$i]->{'status'}.'"';

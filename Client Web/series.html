@@ -10,21 +10,7 @@
 <script type="text/javascript" src="header.js"></script>
 <!-- #navigation -->
 	<div id="contenu">
-		<h2>Vu R&eacute;cemment</h2>
-		<h3>Films</h3>
-		<table border="0" class="listeFilm" id="listeFilm" width="100%">
-			<tr class="titreTab" align="center">
-				<td width="10%"><h4>Film</h4></td>
-				<td width="40%"><h4>Synopsis</h4></td>
-				<td width="10%"><h4>R&eacute;alisateur</h4></td>
-				<td width="10%"><h4>Sortie</h4></td>
-				<td width="10%"><h4>Dur&eacute;e (min)</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
-			</tr>
-		</table>
-
-		<h3>S&eacute;ries</h3>
+		<h2>Mes s&eacute;ries</h2>
 
 		
 		<table border="0" class="listeFilm" id="listeSerie" width="100%">
@@ -37,11 +23,11 @@
 				<td width="10%"><h4>Vu</h4></td>
 			</tr>
 		</table>
-			 <script type="text/javascript">
+		<script type="text/javascript">
 
 			$.ajax({
 				type: "GET",
-				url: "http://perso.imerir.com/cpy/Seen/listeVu.php?quoi=fs&nb=5",
+				url: "http://perso.imerir.com/cpy/Seen/listeVu.php?quoi=s&nb=100",
 				dataType : "html",
 				contentType: 'Content-type: text/plain; charset=iso-8859-15',
 			    // This is the imporant part!!!
@@ -55,16 +41,12 @@
 
 			function remplirTableaux(json){
 				json = JSON.parse(json);
-				for (var i = 0; i < json.film.length; i++) {
-					$("#listeFilm").append("<tr><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].synopsis_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].note_fm+"</td><td align='center'>"+json.film[i].date_fm+"</td></tr>")
-				}
 
 				for (var i = 0; i < json.serie.length; i++) {
 					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td>"+json.serie[i].synopsis_e+"</td><td align='center'>"+json.serie[i].note_e+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr>")
 				}
-				
 			}
-			</script>
+		</script>
 		
 	</div><!-- #contenu -->
 <script type="text/javascript" src="footer.js"></script>

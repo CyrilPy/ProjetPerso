@@ -5,6 +5,8 @@
 <script type="text/javascript">
 	page="Recherche";
 </script>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="session.js"></script>
 <script type="text/javascript" src="header.js"></script>
 <!-- on appelle jquery -->
 <!-- le code jquery -->
@@ -13,24 +15,65 @@
 		//à la modification du champs recherche
 		$("#recherche").keyup(function(){
 			var req=$(this).attr("value");
-			//requête ajax, appel du fichier recherche_ajax.php
-			$.ajax({
-				
-				type: "GET",
-				url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre="+req,
-				dataType : "html",
-				contentType: 'Content-type: text/plain; charset=iso-8859-15',
-			    // This is the imporant part!!!
-			    beforeSend: function(jqXHR) {
-			        jqXHR.overrideMimeType('text/html;charset=iso-8859-15');
-			    },
-				success:function(data){
-					//alert(data);
-					// on met à jour le div suggest avec les données reçus
-					$("#suggest").empty();
-					$("#suggest").append(data);
-				}
-			});
+			if (req != ""){
+				//requête ajax, appel du fichier recherche_ajax.php
+				$.ajax({
+					
+					type: "GET",
+					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre="+req+"&qui="+pseudo,
+					dataType : "html",
+					contentType: 'Content-type: text/plain; charset=iso-8859-15',
+					success:function(data){
+						//alert(data);
+						json = JSON.parse(data);
+						$("#listeF").empty();
+							$("#listeF").append("<h3>Film(s)</h3>");
+
+						if (json.film.length == 0){
+
+							$("#listeF").append("Aucun film &agrave; afficher.");
+						}else{
+							// on met à jour le div liste avec les données reçus
+							// titre, titre_original, synopsis, realisateur, date_sortie, duree, langue
+							$("#listeF").append("<table border='0' class='listeFilm' id='listeFilm' width='100%'><tr><td align='center' width='20%'>Titre</td><td align='center' width='20%'>Titre Original</td><td align='center' width='20%'>R&eacute;alisateur</td><td align='center' width='20%'>Date Sortie</td><td align='center' width='10%'>Dur&eacute;e</td><td align='center' width='10%'>Langue</td></tr>");
+
+							for (var i = 0; i < json.film.length; i++) {
+								$("#listeFilm").append("<tr onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><td><input type='hidden' id='id_bs_f' value='"+json.film[i].id_bs_f+"'>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='6'>"+json.film[i].synopsis_f+"</td></tr>")
+							}
+						}
+					}
+				});
+
+
+				$.ajax({
+					type: "GET",
+					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=s&titre="+req+"&qui="+pseudo,
+					dataType : "html",
+					contentType: 'Content-type: text/plain; charset=iso-8859-15',
+					success:function(data){
+						//alert(data);
+						// on met à jour le div liste avec les données reçus
+						$("#listeS").empty();
+						$("#listeS").append("<h3>S&eacute;rie(s)</h3>");
+						console.log(data);
+						json = JSON.parse(data);
+
+						if (json.serie.length == 0){
+							$("#listeS").append("Aucune s&eacute;rie &agrave; afficher.");
+						}else{
+							// titre, nb_saison, nb_episode, date_debut, langue, statut, synopsis
+							$("#listeS").append("<table border='0' class='listeFilm' id='listeSerie' width='100%'><tr><td align='center' width='20%'>Titre</td><td align='center' width='20%'>Saison(s)</td><td align='center' width='20%'>Episode(s)</td><td align='center' width='20%'>Date D&eacute;but</td><td align='center' width='10%'>Statut</td><td align='center' width='10%'>Langue</td></tr>");
+							for (var i = 0; i < json.serie.length; i++) {
+								$("#listeSerie").append("<tr onclick='$(\"#s"+i+"\").fadeToggle(\"fast\");'><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].nb_saison_s+"</td><td align='center'>"+json.serie[i].nb_episode_s+"</td><td align='center'>"+json.serie[i].date_debut_s+"</td><td align='center'>"+json.serie[i].statut_s+"</td><td align='center'>"+json.serie[i].langue_s+"</td></tr><tr style='display:none;background:gray;' id='s"+i+"'><td colspan='6'>"+json.serie[i].synopsis_s+"</td></tr>")
+							}
+						}
+						
+					}
+				});
+			}else{
+				$("#listeF").empty();
+				$("#listeS").empty();
+			}
 		});
 	})
 </script>
@@ -40,8 +83,32 @@
 		<h2>Recherche</h2>
 		Rechercher un film ou une s&eacute;rie: <input type="text" id="recherche">
 	
-		<div id="suggest">
-		</div> 
+		<div id="listeF"></div>
+		<div id="listeS"></div> 
+
+		<!-- <table border="0" class="listeFilm" id="listeFilm" width="100%">
+			<tr class="titreTab" align="center">
+				<td width="10%"><h4>Film</h4></td>
+				<td width="40%"><h4>Synopsis</h4></td>
+				<td width="10%"><h4>R&eacute;alisateur</h4></td>
+				<td width="10%"><h4>Sortie</h4></td>
+				<td width="10%"><h4>Dur&eacute;e (min)</h4></td>
+				<td width="10%"><h4>Note</h4></td>
+				<td width="10%"><h4>Vu</h4></td>
+			</tr>
+		</table>
+
+		
+		<table border="0" class="listeFilm" id="listeSerie" width="100%">
+			<tr class="titreTab" align="center">
+				<td width="20%"><h4>S&eacute;rie</h4></td>
+				<td width="10%"><h4>Saison</h4></td>
+				<td width="10%"><h4>Episode</h4></td>
+				<td width="40%"><h4>Description Episode</h4></td>
+				<td width="10%"><h4>Note</h4></td>
+				<td width="10%"><h4>Vu</h4></td>
+			</tr>
+		</table> -->
 		
 	</div><!-- #contenu -->
 <script type="text/javascript" src="footer.js"></script>

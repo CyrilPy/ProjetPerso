@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<script type="text/javascript">
+	page="Compte";
+</script>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="session.js"></script>
+<script type="text/javascript" src="header.js"></script>
+<!-- #navigation -->
+	<div id="contenu">
+		<h2>Mon compte</h2>
+		<input type="button" value="D&eacute;connexion" onclick="deconnexion()">
+
+		<script type="text/javascript">
+		function deconnexion(){
+			$.ajax({
+				type: "GET",
+				url: "http://perso.imerir.com/cpy/Seen/session.php?action=d",
+				success:function(){
+					document.location.href="connexion.html";
+				}
+			});
+		}
+		</script>
+		
+	</div><!-- #contenu -->
+<script type="text/javascript" src="footer.js"></script>

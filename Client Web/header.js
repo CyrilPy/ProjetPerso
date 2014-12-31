@@ -33,6 +33,6 @@ document.write('<li><a href="index.html">Acceuil</a></li>');
 document.write('<li><a href="recherche.html">Recherche</a></li>');
 document.write('<li><a href="films.html">Mes films</a></li>');
 document.write('<li><a href="series.html">Mes s&eacute;ries</a></li>');
-document.write('<li><a href="compte.html">Mon compte</a></li>');
+document.write('<li><a href="compte.html">'+pseudo+'</a></li>');
 document.write('</ul>');
 document.write('</div>');

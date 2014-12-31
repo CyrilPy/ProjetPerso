@@ -89,6 +89,12 @@
 	</form>
 	<script type="text/javascript">
 	valide = 1;
+
+	$.ajax({
+		type: "GET",
+		url: "http://perso.imerir.com/cpy/Seen/session.php?action=d"
+	});
+
 	function afficheForm (param){
 		if (param == "cr"){
 			$("#tabCon").fadeOut("fast", function(){$("#tabEnr").fadeIn("fast")});
@@ -179,16 +185,14 @@ function verifCon (){
 	if ($("#pseudoCon").attr("value") != "" && $("#mdpCon").attr("value") != "" ){
 			$.ajax({
 				type: "GET",
-				url: "http://perso.imerir.com/cpy/Seen/connexion.php?pseudo="+$("#pseudoCon").attr("value")+"&mdp="+$("#mdpCon").attr("value"),//---------------------------------------------------
+				url: "http://perso.imerir.com/cpy/Seen/connexion.php?pseudo="+$("#pseudoCon").attr("value")+"&mdp="+$("#mdpCon").attr("value"),
 				dataType : "html",
 				contentType: 'Content-type: text/plain; charset=iso-8859-15',
 				success:function(data){
 					if (data == 1){
-						alert("Bienvenue dans Seen !");
 						document.location.href="index.html";
 					}else{
 						alert("Les informations que vous avez renseignées sont incorrectes.");
-						document.location.href="connexion.html";
 					}
 				}
 			});

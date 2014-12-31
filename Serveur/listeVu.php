@@ -1,8 +1,8 @@
 <?php 
-
-if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["qui"]) && $_GET["qui"] != '' && isset($_GET["nb"]) && $_GET["nb"] != ''){
+session_start();
+if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["nb"]) && $_GET["nb"] != ''){
     $quoi = $_GET["quoi"];
-    $qui = $_GET["qui"];
+    $qui = $_SESSION["id"];
     $nb = $_GET["nb"];
 
     $retour = '';
@@ -24,7 +24,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["qui"]) && $_GET[
                   retourFilm($retour);
       break;
 
-      case "s" :  $retour = $req->query('  SELECT titre_s, num_sn, num_e, titre_e, synopsis_e, note_em, date_em 
+      case "s" :  $retour = $req->query(' SELECT titre_s, num_sn, num_e, titre_e, synopsis_e, note_em, date_em 
                                           FROM serie, saison, episode, episode_membre
                                           WHERE serie.id_s=saison.id_s 
                                           AND saison.id_sn=episode.id_sn
@@ -83,7 +83,28 @@ function retourFilm($data){// formatage du JSON pour le client
 
   echo $jsonClient;
 }
-function retourSerie(){// formatage du JSON pour le client
+function retourSerie($serie){// formatage du JSON pour le client
+  $jsonClient = '{"serie":[';
+  $i = 0;
+  foreach($serie as $row) {
+      if ($i != 0){
+        $jsonClient .= ',';
+      }
+      $jsonClient .= '{';
+      $jsonClient .= '"titre_s":"'.$row["titre_s"].'",';
+      $jsonClient .= '"num_sn":"'.$row["num_sn"].'",';
+      $jsonClient .= '"num_e":"'.$row["num_e"].'",';
+      $jsonClient .= '"titre_e":"'.$row["titre_e"].'",';
+      $jsonClient .= '"synopsis_e":"'.$row["synopsis_e"].'",';
+      $jsonClient .= '"note_em":"'.$row["note_em"].'",';
+      $jsonClient .= '"date_em":"'.$row["date_em"].'"';
+      $jsonClient .= '}';
+
+      $i++;
+  }
+  $jsonClient .= ']}';
+
+  echo $jsonClient; 
 }
 function retourIndex($film, $serie){ // formatage du JSON pour le client
   $jsonClient = '{"film":[';
