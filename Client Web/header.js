@@ -1,8 +1,8 @@
 document.write('<title>Seen | '+page+'</title>');
 document.write('<!-- La feuille de styles "base.css" doit être appelée en premier. -->');
+document.write('<link rel="stylesheet" type="text/css" href="bootstrap-3.3.1-dist/dist/css/bootstrap.css" media="screen" />');
 document.write('<link rel="stylesheet" type="text/css" href="css/base.css" media="all" />');
 document.write('<link rel="stylesheet" type="text/css" href="css/modele04.css" media="screen" />');
-
 
 document.write('<script type="text/javascript" src="jquery.min.js"></script>');
 document.write('<script type="text/javascript">');
