@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript">
-	page="Acceuil";
+	page="Mes s&eacute;ries";
 </script>
 <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="session.js"></script>
@@ -43,7 +43,7 @@
 				json = JSON.parse(json);
 
 				for (var i = 0; i < json.serie.length; i++) {
-					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td>"+json.serie[i].synopsis_e+"</td><td align='center'>"+json.serie[i].note_e+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr>")
+					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td>"+json.serie[i].synopsis_e+"</td><td align='center'>"+json.serie[i].note_em+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr>")
 				}
 			}
 		</script>

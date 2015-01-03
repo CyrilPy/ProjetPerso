@@ -16,7 +16,7 @@
 		$("#recherche").keyup(function(){
 			var req=$(this).attr("value");
 			if (req != ""){
-				//requête ajax, appel du fichier recherche_ajax.php
+				//requête ajax, appel du fichier recherche.php
 				$.ajax({
 					
 					type: "GET",
@@ -35,10 +35,10 @@
 						}else{
 							// on met à jour le div liste avec les données reçus
 							// titre, titre_original, synopsis, realisateur, date_sortie, duree, langue
-							$("#listeF").append("<table border='0' class='listeFilm' id='listeFilm' width='100%'><tr><td align='center' width='5%'>Action</td><td align='center' width='25%'>Titre</td><td align='center' width='25%'>Titre Original</td><td align='center' width='20%'>R&eacute;alisateur</td><td align='center' width='10%'>Date Sortie</td><td align='center' width='5%'>Dur&eacute;e</td><td align='center' width='10%'>Langue</td></tr>");
+							$("#listeF").append("<table border='0' class='listeFilm' id='listeFilm' width='100%'><tr><td align='center' width='6%'><h4>Action</h4></td><td align='center' width='24%'><h4>Titre</h4></td><td align='center' width='25%'><h4>Titre Original</h4></td><td align='center' width='20%'><h4>R&eacute;alisateur</h4></td><td align='center' width='10%'><h4>Date Sortie</h4></td><td align='center' width='5%'><h4>Dur&eacute;e</h4></td><td align='center' width='10%'><h4>Langue</h4></td></tr>");
 
 							for (var i = 0; i < json.film.length; i++) {
-								$("#listeFilm").append("<tr onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><td><input type='button' value='Vu'><input type='button' value='A voir'><input type='hidden' id='id_bs_f' value='"+json.film[i].id_bs_f+"'></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>")
+								$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"f\", "+json.film[i].id_bs_f+")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
 							}
 						}
 					}
@@ -55,17 +55,16 @@
 						// on met à jour le div liste avec les données reçus
 						$("#listeS").empty();
 						$("#listeS").append("<h3>S&eacute;rie(s)</h3>");
-						console.log(data);
 						json = JSON.parse(data);
 
 						if (json.serie.length == 0){
 							$("#listeS").append("Aucune s&eacute;rie &agrave; afficher.");
 						}else{
 							// titre, nb_saison, nb_episode, date_debut, langue, statut, synopsis
-							$("#listeS").append("<table border='0' class='listeFilm' id='listeSerie' width='100%'><tr><td align='center' width='5%'>Action</td><td align='center' width='35%'>Titre</td><td align='center' width='15%'>Saison(s)</td><td align='center' width='15%'>Episode(s)</td><td align='center' width='10%'>Date D&eacute;but</td><td align='center' width='10%'>Statut</td><td align='center' width='10%'>Langue</td></tr>");
+							$("#listeS").append("<table border='0' class='listeFilm' id='listeSerie' width='100%'><tr><td align='center' width='6%'><h4>Action</h4></td><td align='center' width='34%'><h4>Titre</h4></td><td align='center' width='15%'><h4>Saison(s)</h4></td><td align='center' width='15%'><h4>Episode(s)</h4></td><td align='center' width='10%'><h4>Date D&eacute;but</h4></td><td align='center' width='10%'><h4>Statut</h4></td><td align='center' width='10%'><h4>Langue</h4></td></tr>");
 
 							for (var i = 0; i < json.serie.length; i++) {
-								$("#listeSerie").append("<tr><td><div class='btn-group' role='group' aria-label='...'><button type='button' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#s"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button><input type='hidden' id='id_bs_s' value='"+json.serie[i].id_bs_s+"'></div></td><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].nb_saison_s+"</td><td align='center'>"+json.serie[i].nb_episode_s+"</td><td align='center'>"+json.serie[i].date_debut_s+"</td><td align='center'>"+json.serie[i].statut_s+"</td><td align='center'>"+json.serie[i].langue_s+"</td></tr><tr style='display:none;background:gray;' id='s"+i+"'><td colspan='7'>"+json.serie[i].synopsis_s+"</td></tr>")
+								$("#listeSerie").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"s\", "+json.serie[i].id_bs_s+")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#s"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].nb_saison_s+"</td><td align='center'>"+json.serie[i].nb_episode_s+"</td><td align='center'>"+json.serie[i].date_debut_s+"</td><td align='center'>"+json.serie[i].statut_s+"</td><td align='center'>"+json.serie[i].langue_s+"</td></tr><tr style='display:none;background:gray;' id='s"+i+"'><td colspan='7'>"+json.serie[i].synopsis_s+"</td></tr>");
 							}
 						}
 					}
@@ -76,6 +75,16 @@
 			}
 		});
 	})
+function ajoute(quoi, id_bs){
+	$.ajax({
+		type: "GET",
+		url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs,
+		dataType : "html",
+		contentType: 'Content-type: text/plain; charset=iso-8859-15',
+		success:function(data){
+		}
+	});
+}
 </script>
 
 <!-- #navigation -->
@@ -85,30 +94,6 @@
 	
 		<div id="listeF"></div>
 		<div id="listeS"></div> 
-
-		<!-- <table border="0" class="listeFilm" id="listeFilm" width="100%">
-			<tr class="titreTab" align="center">
-				<td width="10%"><h4>Film</h4></td>
-				<td width="40%"><h4>Synopsis</h4></td>
-				<td width="10%"><h4>R&eacute;alisateur</h4></td>
-				<td width="10%"><h4>Sortie</h4></td>
-				<td width="10%"><h4>Dur&eacute;e (min)</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
-			</tr>
-		</table>
-
-		
-		<table border="0" class="listeFilm" id="listeSerie" width="100%">
-			<tr class="titreTab" align="center">
-				<td width="20%"><h4>S&eacute;rie</h4></td>
-				<td width="10%"><h4>Saison</h4></td>
-				<td width="10%"><h4>Episode</h4></td>
-				<td width="40%"><h4>Description Episode</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
-			</tr>
-		</table> -->
 		
 	</div><!-- #contenu -->
 <script type="text/javascript" src="footer.js"></script>

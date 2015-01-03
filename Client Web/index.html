@@ -12,15 +12,16 @@
 	<div id="contenu">
 		<h2>Vu R&eacute;cemment</h2>
 		<h3>Films</h3>
-		<table border="0" class="listeFilm" id="listeFilm" width="100%">
-			<tr class="titreTab" align="center">
-				<td width="10%"><h4>Film</h4></td>
-				<td width="40%"><h4>Synopsis</h4></td>
-				<td width="10%"><h4>R&eacute;alisateur</h4></td>
-				<td width="10%"><h4>Sortie</h4></td>
-				<td width="10%"><h4>Dur&eacute;e (min)</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
+		<table border='0' class='listeFilm' id='listeFilm' width='100%'>
+			<tr>
+				<td align='center' width='5%'>Plus</td>
+				<td align='center' width='30%'>Titre</td>
+				<td align='center' width='20%'>R&eacute;alisateur</td>
+				<td align='center' width='5%'>Dur&eacute;e</td>
+				<td align='center' width='10%'>Langue</td>
+				<td align='center' width='10%'>Sortie</td>
+				<td align='center' width="10%">Note</td>
+				<td align='center' width="10%">Vu</td>
 			</tr>
 		</table>
 
@@ -29,14 +30,17 @@
 		
 		<table border="0" class="listeFilm" id="listeSerie" width="100%">
 			<tr class="titreTab" align="center">
-				<td width="20%"><h4>S&eacute;rie</h4></td>
-				<td width="10%"><h4>Saison</h4></td>
-				<td width="10%"><h4>Episode</h4></td>
-				<td width="40%"><h4>Description Episode</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
+				<td align='center' width='5%'>Plus</td>
+				<td align='center' width="45%">Titre</td>
+				<td align='center' width="10%">Saison</td>
+				<td align='center' width="10%">Episode</td>
+				<td align='center' width="10%">Sortie</td>
+				<td align='center' width="10%">Note</td>
+				<td align='center' width="10%">Vu</td>
 			</tr>
 		</table>
+
+
 			 <script type="text/javascript">
 
 			$.ajax({
@@ -54,13 +58,15 @@
 			});
 
 			function remplirTableaux(json){
+				console.log(json);
 				json = JSON.parse(json);
+				console.log(json);
 				for (var i = 0; i < json.film.length; i++) {
-					$("#listeFilm").append("<tr><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].synopsis_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].note_fm+"</td><td align='center'>"+json.film[i].date_fm+"</td></tr>")
+					$("#listeFilm").append("<tr><td align='center'><div class='btn-group' role='group' aria-label='...'><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></div></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+json.film[i].note_fm+"</td><td align='center'>"+json.film[i].date_fm+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='8'>"+json.film[i].synopsis_f+"</td></tr>")
 				}
 
 				for (var i = 0; i < json.serie.length; i++) {
-					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td>"+json.serie[i].synopsis_e+"</td><td align='center'>"+json.serie[i].note_e+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr>")
+					$("#listeSerie").append("<tr><td align='center'><div class='btn-group' role='group' aria-label='...'><button type='button' class='btn btn-default btn-xs' onclick='$(\"#s"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></div></td><td>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td align='center'>"+json.serie[i].date_e+"</td><td align='center'>"+json.serie[i].note_em+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr><tr style='display:none;background:gray;' id='s"+i+"'><td colspan='7'>"+json.serie[i].synopsis_e+"</td></tr>")
 				}
 				
 			}

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript">
-	page="Films";
+	page="Mes films";
 </script>
 <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="session.js"></script>
@@ -11,18 +11,7 @@
 <!-- #navigation -->
 	<div id="contenu">
 		<h2>Mes films</h2>
-		<table border="0" class="listeFilm" id="listeFilm" width="100%">
-			<tr class="titreTab" align="center">
-				<td width="10%"><h4>Titre</h4></td>
-				<td width="40%"><h4>Synopsis</h4></td>
-				<td width="10%"><h4>R&eacute;alisateur</h4></td>
-				<td width="10%"><h4>Sortie</h4></td>
-				<td width="10%"><h4>Dur&eacute;e (min)</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
-			</tr>
-		</table>
-		
+		<div id="listeF"></div>
 		<script type="text/javascript">
 			$.ajax({
 				type: "GET",
@@ -40,9 +29,23 @@
 
 			function remplirTableaux(json){
 				json = JSON.parse(json);
-				for (var i = 0; i < json.film.length; i++) {
-					$("#listeFilm").append("<tr><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].synopsis_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].note_fm+"</td><td align='center'>"+json.film[i].date_fm+"</td></tr>")
-				}				
+
+
+				if (json.film.length == 0){
+
+					$("#listeF").append("Aucun film &agrave; afficher.");
+				}else{
+					// on met à jour le div liste avec les données reçus
+					// titre, titre_original, synopsis, realisateur, date_sortie, duree, langue
+					$("#listeF").append("<table border='0' class='listeFilm' id='listeFilm' width='100%'><tr class='titreTab' align='center'><td width='6%'>Action</td><td width='44%'><h4>Titre</h4></td><td width='10%'><h4>R&eacute;alisateur</h4></td><td width='10%'><h4>Sortie</h4></td><td width='10%'><h4>Dur&eacute;e (min)</h4></td><td width='10%'><h4>Note</h4></td><td width='10%'><h4>Vu</h4></td></tr>");
+
+					for (var i = 0; i < json.film.length; i++) {
+						$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button><input type='hidden' id='id_bs_f' value='"+json.film[i].id_bs_f+"'></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].note_fm+"</td><td align='center'>"+json.film[i].date_fm+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
+					}
+				}
+
+
+
 			}
 		</script>
 	</div><!-- #contenu -->

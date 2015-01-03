@@ -24,7 +24,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["nb"]) && $_GET["
                   retourFilm($retour);
       break;
 
-      case "s" :  $retour = $req->query(' SELECT titre_s, num_sn, num_e, titre_e, synopsis_e, note_em, date_em 
+      case "s" :  $retour = $req->query(' SELECT titre_s, num_sn, num_e, titre_e, date_e, synopsis_e, note_em, date_em 
                                           FROM serie, saison, episode, episode_membre
                                           WHERE serie.id_s=saison.id_s 
                                           AND saison.id_sn=episode.id_sn
@@ -41,7 +41,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["nb"]) && $_GET["
                                           AND id_m = '.$qui.' 
                                           ORDER BY date_fm DESC 
                                           LIMIT 0,'.$nb.';'); // requete sur la base de données;
-                  $serie = $req->query('  SELECT titre_s, num_sn, num_e, titre_e, synopsis_e, note_em, date_em 
+                  $serie = $req->query('  SELECT titre_s, num_sn, num_e, titre_e, date_e, synopsis_e, note_em, date_em 
                                           FROM serie, saison, episode, episode_membre
                                           WHERE serie.id_s=saison.id_s 
                                           AND saison.id_sn=episode.id_sn
@@ -95,6 +95,7 @@ function retourSerie($serie){// formatage du JSON pour le client
       $jsonClient .= '"num_sn":"'.$row["num_sn"].'",';
       $jsonClient .= '"num_e":"'.$row["num_e"].'",';
       $jsonClient .= '"titre_e":"'.$row["titre_e"].'",';
+      $jsonClient .= '"date_e":"'.$row["date_e"].'",';
       $jsonClient .= '"synopsis_e":"'.$row["synopsis_e"].'",';
       $jsonClient .= '"note_em":"'.$row["note_em"].'",';
       $jsonClient .= '"date_em":"'.$row["date_em"].'"';
@@ -137,6 +138,7 @@ function retourIndex($film, $serie){ // formatage du JSON pour le client
       $jsonClient .= '"num_sn":"'.$row["num_sn"].'",';
       $jsonClient .= '"num_e":"'.$row["num_e"].'",';
       $jsonClient .= '"titre_e":"'.$row["titre_e"].'",';
+      $jsonClient .= '"date_e":"'.$row["date_e"].'",';
       $jsonClient .= '"synopsis_e":"'.$row["synopsis_e"].'",';
       $jsonClient .= '"note_em":"'.$row["note_em"].'",';
       $jsonClient .= '"date_em":"'.$row["date_em"].'"';

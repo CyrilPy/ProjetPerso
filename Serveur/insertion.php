@@ -19,7 +19,13 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
                   };
       break;
 
-      case "s" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
+      case "s" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != ''){
+
+                    $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
+                    $retour = $req->exec('REPLACE INTO serie (id_bs_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "Mary of Scotland", "1936", 2015, "Anglais", "finalement on sait");');
+
+                    //$retour = $req->exec('REPLACE INTO serie (id_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "Mary of Scotland", "1936", 2015, "Anglais", "finalement on sait");');
+
                       
                   }else{
                     header("HTTP/1.0 400 Bad Request");
@@ -36,7 +42,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
       break;
     }
 }else{
-    header("HTTP/1.0 400 Bad Request");
+  header("HTTP/1.0 400 Bad Request");
 }
  
 function retourFilm(){// formatage du JSON pour le client
