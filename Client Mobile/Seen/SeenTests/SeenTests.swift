@@ -2,8 +2,8 @@
 //  SeenTests.swift
 //  SeenTests
 //
-//  Created by Cyril Py on 10/12/2014.
-//  Copyright (c) 2014 Cyril Py. All rights reserved.
+//  Created by Cyril Py on 05/01/2015.
+//  Copyright (c) 2015 Cyril Py. All rights reserved.
 //
 
 import UIKit
