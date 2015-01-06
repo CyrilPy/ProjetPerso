@@ -37,14 +37,27 @@
 							// titre, titre_original, synopsis, realisateur, date_sortie, duree, langue
 							$("#listeF").append("<table border='0' class='listeFilm' id='listeFilm' width='100%'><tr><td align='center' width='6%'><h4>Action</h4></td><td align='center' width='24%'><h4>Titre</h4></td><td align='center' width='25%'><h4>Titre Original</h4></td><td align='center' width='20%'><h4>R&eacute;alisateur</h4></td><td align='center' width='10%'><h4>Date Sortie</h4></td><td align='center' width='5%'><h4>Dur&eacute;e</h4></td><td align='center' width='10%'><h4>Langue</h4></td></tr>");
 
+								tabFilm = new Array;
+
 							for (var i = 0; i < json.film.length; i++) {
-								$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"f\", "+json.film[i].id_bs_f+")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
+
+								tabFilm[json.film[i].id_bs_f] = new Array;
+								
+								tabFilm[json.film[i].id_bs_f]["titre"]=json.film[i].titre_f.replace("&", "And");
+								tabFilm[json.film[i].id_bs_f]["titre_original"]=json.film[i].titre_original_f.replace("&", "And");
+								tabFilm[json.film[i].id_bs_f]["synopsis"]=json.film[i].synopsis_f.replace("&", "And");
+								tabFilm[json.film[i].id_bs_f]["realisateur"]=json.film[i].realisateur_f;
+								tabFilm[json.film[i].id_bs_f]["date_sortie"]=json.film[i].date_sortie_f;
+								tabFilm[json.film[i].id_bs_f]["duree"]=json.film[i].duree_f;
+								tabFilm[json.film[i].id_bs_f]["langue"]=json.film[i].langue_f;
+
+								$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"f\")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
 							}
 						}
 					}
 				});
 
-
+				// LISTE DES SERIES
 				$.ajax({
 					type: "GET",
 					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=s&titre="+req+"&qui="+pseudo,
@@ -63,7 +76,20 @@
 							// titre, nb_saison, nb_episode, date_debut, langue, statut, synopsis
 							$("#listeS").append("<table border='0' class='listeFilm' id='listeSerie' width='100%'><tr><td align='center' width='6%'><h4>Action</h4></td><td align='center' width='34%'><h4>Titre</h4></td><td align='center' width='15%'><h4>Saison(s)</h4></td><td align='center' width='15%'><h4>Episode(s)</h4></td><td align='center' width='10%'><h4>Date D&eacute;but</h4></td><td align='center' width='10%'><h4>Statut</h4></td><td align='center' width='10%'><h4>Langue</h4></td></tr>");
 
+							tabSerie = new Array;
+
 							for (var i = 0; i < json.serie.length; i++) {
+
+								tabSerie[json.serie[i].id_bs_s] = new Array;
+
+								tabSerie[json.serie[i].id_bs_s]["titre"]=json.serie[i].titre_s.replace("&", "And");
+								tabSerie[json.serie[i].id_bs_s]["nb_saison"]=json.serie[i].nb_saison_s;
+								tabSerie[json.serie[i].id_bs_s]["nb_episode"]=json.serie[i].nb_episode_s;
+								tabSerie[json.serie[i].id_bs_s]["date_debut"]=json.serie[i].date_debut_s;
+								tabSerie[json.serie[i].id_bs_s]["langue"]=json.serie[i].langue_s;
+								tabSerie[json.serie[i].id_bs_s]["statut"]=json.serie[i].statut_s;
+								tabSerie[json.serie[i].id_bs_s]["synopsis"]=json.serie[i].synopsis_s.replace("&", "And");
+
 								$("#listeSerie").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"s\", "+json.serie[i].id_bs_s+")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#s"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].nb_saison_s+"</td><td align='center'>"+json.serie[i].nb_episode_s+"</td><td align='center'>"+json.serie[i].date_debut_s+"</td><td align='center'>"+json.serie[i].statut_s+"</td><td align='center'>"+json.serie[i].langue_s+"</td></tr><tr style='display:none;background:gray;' id='s"+i+"'><td colspan='7'>"+json.serie[i].synopsis_s+"</td></tr>");
 							}
 						}
@@ -76,14 +102,26 @@
 		});
 	})
 function ajoute(quoi, id_bs){
-	$.ajax({
-		type: "GET",
-		url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs,
-		dataType : "html",
-		contentType: 'Content-type: text/plain; charset=iso-8859-15',
-		success:function(data){
-		}
-	});
+	if (quoi == "s"){
+		$.ajax({
+			type: "GET",
+			url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs+"&titre_s="+tabSerie[id_bs]['titre']+"&nb_saison="+tabSerie[id_bs]['nb_saison']+"&nb_episode="+tabSerie[id_bs]['nb_episode']+"&date_debut="+tabSerie[id_bs]['date_debut']+"&langue="+tabSerie[id_bs]['langue']+"&statut="+tabSerie[id_bs]['statut']+"&synopsis="+tabSerie[id_bs]['synopsis'],
+			dataType : "html",
+			contentType: 'Content-type: text/plain; charset=iso-8859-15',
+			success:function(data){
+			}
+		});
+	}else if (quoi == "f"){
+		$.ajax({
+			type: "GET",
+			url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs+"&titre_f="+tabFilm[id_bs]["titre"]+"&titre_original="+tabFilm[id_bs]["titre_original"]+"&synopsis="+tabFilm[id_bs]["synopsis"]+"&realisateur="+tabFilm[id_bs]["realisateur"]+"&date_sortie="+tabFilm[id_bs]["date_sortie"]+"&duree="+tabFilm[id_bs]["duree"]+"&langue="+tabFilm[id_bs]["langue"],
+			dataType : "html",
+			contentType: 'Content-type: text/plain; charset=iso-8859-15',
+			success:function(data){
+			}
+		});
+	}
+	
 }
 </script>
 

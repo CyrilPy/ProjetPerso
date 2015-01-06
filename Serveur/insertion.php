@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
     $quoi = $_GET["quoi"];
 
@@ -12,19 +12,32 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
     $pass = "dzMbzFHmyS5bQV9V"; // mot de passe de l'utilisateur de la BDD
 
     switch ($quoi){
-      case "f" : if (isset($_GET["titre_f"])){
-                      
+      case "f" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != '' && isset($_GET["titre_f"]) && $_GET["titre_f"] != '' && isset($_GET["titre_original"]) && $_GET["titre_original"] != '' && isset($_GET["synopsis"]) && $_GET["synopsis"] != '' && isset($_GET["realisateur"]) && $_GET["realisateur"] != '' && isset($_GET["date_sortie"]) && $_GET["date_sortie"] != '' && isset($_GET["duree"]) && $_GET["duree"] != '' && isset($_GET["langue"]) && $_GET["langue"] != ''){
+
+                    $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
+                    $retour = $req->exec('INSERT IGNORE film (id_bs_f, titre_f, titre_original_f, date_sortie_f, duree_f, synopsis_f, langue_f, realisateur_f) VALUES ('.$_GET["id_bs"].', "'.$_GET["titre_f"].'", "'.$_GET["titre_original"].'", '.$_GET["date_sortie"].', "'.$_GET["duree"].'", "'.$_GET["synopsis"].'", "'.$_GET["langue"].'", "'.$_GET["realisateur"].'");');
+
+
+                    $id = $req->query('SELECT id_f FROM film WHERE id_bs_f = '.$_GET["id_bs"].';');
+                    $id = $id->fetchAll();
+
+                    $retour = $req->exec('INSERT IGNORE film_membre (id_f, id_m, ajoute_fm) VALUES ('.$id[0]["id_s"].', '.$_SESSION["id"].', 1);');
+
                   }else{
                     header("HTTP/1.0 400 Bad Request");
                   };
       break;
 
-      case "s" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != ''){
+      case "s" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != '' && isset($_GET["titre_s"]) && $_GET["titre_s"] != '' && isset($_GET["date_debut"]) && $_GET["date_debut"] != '' && isset($_GET["langue"]) && $_GET["langue"] != '' && isset($_GET["statut"]) && $_GET["statut"] != '' && isset($_GET["synopsis"]) && $_GET["synopsis"] != ''){
 
                     $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
-                    $retour = $req->exec('REPLACE INTO serie (id_bs_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "Mary of Scotland", "1936", 2015, "Anglais", "finalement on sait");');
+                    $retour = $req->exec('INSERT IGNORE serie (id_bs_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "'.$_GET["titre_s"].'", "'.$_GET["synopsis"].'", '.$_GET["date_debut"].', "'.$_GET["langue"].'", "'.$_GET["statut"].'");');
 
-                    //$retour = $req->exec('REPLACE INTO serie (id_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "Mary of Scotland", "1936", 2015, "Anglais", "finalement on sait");');
+
+                    $id = $req->query('SELECT id_s FROM serie WHERE id_bs_s = '.$_GET["id_bs"].';');
+                    $id = $id->fetchAll();
+
+                    $retour = $req->exec('INSERT IGNORE serie_membre (id_s, id_m, ajoute_sm) VALUES ('.$id[0]["id_s"].', '.$_SESSION["id"].', 1);');
 
                       
                   }else{
@@ -56,8 +69,10 @@ function retourSerie(){// formatage du JSON pour le client
 function retourMembre($data){ // formatage du JSON pour le client
   if ($data == 1){
     header("HTTP/1.0 200 OK");
+    echo '{"code":"1"}';
   }else{
     header("HTTP/1.0 500 Internal Server Error");
+    echo '{"code":"0"}';
   }
 }
 ?>

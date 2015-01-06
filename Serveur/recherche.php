@@ -1,25 +1,29 @@
 <?php 
 
-if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"]) && isset($_GET["qui"])){
+if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"])){
   $quoi = $_GET["quoi"];
-  $qui = $_GET["qui"];
   $retour = '';
-    // Création d'un flux pour connexion à BetaSeries
-  $opts = array(
-    'http'=>array(
-      'method'=>"GET",
-      'header'=>"X-BetaSeries-Key: 4efa6075b15d\r\n".
-                "X-BetaSeries-Version: 2.3\r\n".
-                "Accept: application/json\r\n".
-                "User-agent: Seen-".$qui."\r\n"
-    )
-  );
+
+  if (isset($_GET["qui"])){
+  $qui = $_GET["qui"];
+     // Création d'un flux pour connexion à BetaSeries
+    $opts = array(
+      'http'=>array(
+        'method'=>"GET",
+        'header'=>"X-BetaSeries-Key: 4efa6075b15d\r\n".
+                  "X-BetaSeries-Version: 2.3\r\n".
+                  "Accept: application/json\r\n".
+                  "User-agent: Seen-".$qui."\r\n"
+      )
+    );
+    $context = stream_context_create($opts);
+  }
+   
   // Données nécessaires à la connexion à la BDD
   $host = "mysql.imerir.com"; // serveur mysql
   $db = "seen";       // nom de la BDD
   $user = "seen";       // login de l'utilisateur de la BDD
   $pass = "dzMbzFHmyS5bQV9V"; // mot de passe de l'utilisateur de la BDD
-  $context = stream_context_create($opts);
 
   switch ($quoi){
     case "f" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
@@ -59,6 +63,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"]) && is
 function retourFilm($data){// formatage du JSON pour le client
   $data = str_replace("\\n","",$data);
   $data = str_replace("\\r","",$data);
+  $data = str_replace("\\t","",$data);
   $json = json_decode($data);
 
   $jsonClient = '{"film":[';
@@ -85,6 +90,7 @@ function retourFilm($data){// formatage du JSON pour le client
 function retourSerie($data){// formatage du JSON pour le client
   $data = str_replace("\\n","",$data);
   $data = str_replace("\\r","",$data);
+  $data = str_replace("\\t","",$data);
   $json = json_decode($data);
 
   $jsonClient = '{"serie":[';

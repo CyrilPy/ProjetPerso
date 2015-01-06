@@ -11,7 +11,7 @@ if (isset($_GET["pseudo"]) && isset($_GET["mdp"])){
   $retour = $dbh->query('SELECT id_mbr, pseudo_mbr, mdp_mbr FROM membre WHERE pseudo_mbr = \''.$_GET["pseudo"].'\';');
   $res = $retour->fetchAll();
 
-  if ( $res[0]["mdp_mbr"] == md5($_GET["mdp"]) ){
+  if ( isset($res[0]) && $res[0]["mdp_mbr"] == md5($_GET["mdp"]) ){
     header("HTTP/1.0 200 OK");
     echo "1";
     $_SESSION["id"] = $res[0]["id_mbr"];
