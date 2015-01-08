@@ -43,6 +43,8 @@ class CreationCompte: UIViewController, UITextFieldDelegate {
                     dispatch_async(dispatch_get_main_queue(), {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let vc = storyboard.instantiateViewControllerWithIdentifier("Connexion") as Connexion
+                        vc.vPseudo = self.pseudo.text
+                        vc.vMdp = ""
                         self.presentViewController(vc, animated: true, completion: nil)
                         
                     });
@@ -63,7 +65,24 @@ class CreationCompte: UIViewController, UITextFieldDelegate {
     }
     func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
-        textField.resignFirstResponder()
+        if (textField.returnKeyType.rawValue == 4){ // 4 = "next", 0 = "return" || "default"
+            switch textField {
+            case nom : prenom.becomeFirstResponder()
+                break;
+            case prenom : mail.becomeFirstResponder()
+                break;
+            case mail : pseudo.becomeFirstResponder()
+                break;
+            case pseudo : mdp.becomeFirstResponder()
+                break;
+            default:
+                break;
+            }
+            
+            //textField.nextResponder()?.becomeFirstResponder()
+        }else{
+            textField.resignFirstResponder()
+        }
         return true;
     }
 }

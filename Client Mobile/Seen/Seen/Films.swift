@@ -20,7 +20,7 @@ class Films: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         self.items = parseJSON(getJSON("http://perso.imerir.com/cpy/Seen/listeVu.php?quoi=f&nb=100"))
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-       
+        self.tableView.rowHeight = 60.0
     }
     
     
@@ -41,18 +41,24 @@ class Films: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+        var cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+        
+        cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+        
+        cell!.accessoryType = UITableViewCellAccessoryType(rawValue: 1)!
         
         if let navn = self.items["film"]![indexPath.row]["titre_f"] as? NSString {
-            cell.textLabel?.text = navn
+            cell!.textLabel?.text = navn
         } else {
-            cell.textLabel?.text = "No Name"
+            cell!.textLabel?.text = "No Name"
         }
         
-        if let desc = self.items["film"]![indexPath.row]["synopsis_f"] as? NSString {
-            cell.detailTextLabel?.text = desc
+        if let realisateur = self.items["film"]![indexPath.row]["realisateur_f"] as? NSString {
+            if let date_sortie = self.items["film"]![indexPath.row]["date_sortie_f"] as? NSString {
+                cell!.detailTextLabel?.text = date_sortie + " - " + realisateur
+            }
         }
-        return cell
+        return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -14,13 +14,16 @@ class Connexion: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        pseudo.text = vPseudo
+        mdp.text = vMdp
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    var vPseudo : String = "Python"
+    var vMdp : String = "python"
     
     @IBOutlet var pseudo: UITextField!
     @IBOutlet var mdp: UITextField!
@@ -51,7 +54,11 @@ class Connexion: UIViewController, UITextFieldDelegate {
     }
     func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
     {
-        textField.resignFirstResponder()
+        if (textField.returnKeyType.rawValue == 4){
+            mdp.becomeFirstResponder()
+        }else{
+            textField.resignFirstResponder()
+        }
         return true;
     }
 }

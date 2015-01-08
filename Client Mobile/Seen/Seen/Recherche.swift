@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate  {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sbSearch: UISearchBar!
 
@@ -19,7 +19,9 @@ class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.items = parseJSON(getJSON("/cpy/Seen/recherche.php?quoi=f&titre= "))
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.rowHeight = 60.0
     }
     
     override func didReceiveMemoryWarning() {
@@ -27,14 +29,26 @@ class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         // Dispose of any resources that can be recreated.
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if ((searchText) == ""){
+            self.searchText = " "
+        }else{
+            self.searchText = searchText
+        }
+        self.items = parseJSON(getJSON("/cpy/Seen/recherche.php?quoi=f&titre=" + self.searchText))
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.tableView.reloadData()
+        })
+    }
+    
     func searchBarSearchButtonClicked( searchBar: UISearchBar!)
     {
         self.searchText = searchBar.text
         searchBar.resignFirstResponder()
         
-        var recherche = self.searchText.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        self.items = parseJSON(getJSON("/cpy/Seen/recherche.php?quoi=f&titre=" + self.searchText))
         
-        self.items = parseJSON(getJSON("http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre=" + recherche))
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableView.reloadData()
         })
@@ -43,7 +57,7 @@ class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     
     func getJSON(urlToRequest: String) -> NSData{
-        return NSData(contentsOfURL: NSURL(string: urlToRequest)!)!
+        return NSData(contentsOfURL: NSURL(scheme: "http", host: "perso.imerir.com", path: urlToRequest)!)!
     }
     
     func parseJSON(inputData: NSData) -> NSDictionary{
@@ -63,18 +77,24 @@ class Recherche: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+        var cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+        
+        cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+        
+        cell!.accessoryType = UITableViewCellAccessoryType(rawValue: 1)!
         
         if let navn = self.items["film"]![indexPath.row]["titre_f"] as? NSString {
-            cell.textLabel?.text = navn
+            cell!.textLabel?.text = navn
         } else {
-            cell.textLabel?.text = "No Name"
+            cell!.textLabel?.text = "No Name"
         }
         
-        if let desc = self.items["film"]![indexPath.row]["synopsis_f"] as? NSString {
-            cell.detailTextLabel?.text = desc
+        if let realisateur = self.items["film"]![indexPath.row]["realisateur_f"] as? NSString {
+            if let date_sortie = self.items["film"]![indexPath.row]["date_sortie_f"] as? NSString {
+                cell!.detailTextLabel?.text = date_sortie + " - " + realisateur
+            }
         }
-        return cell
+        return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -64,6 +64,7 @@ class FilmsDetails: UIViewController {
     
     @IBAction func Ajouter(sender: UIBarButtonItem) {
         
+        synopsis = synopsis.stringByReplacingOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: nil)
         synopsis = synopsis.stringByReplacingOccurrencesOfString("&", withString: "and", options: NSStringCompareOptions.LiteralSearch, range: nil)
         titre = titre.stringByReplacingOccurrencesOfString("&", withString: "and", options: NSStringCompareOptions.LiteralSearch, range: nil)
         titre_original = titre_original.stringByReplacingOccurrencesOfString("&", withString: "and", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -82,6 +83,12 @@ class FilmsDetails: UIViewController {
             btnAjouter.enabled = false
         }else{
             println("Ajout echoué.");
+            dispatch_async(dispatch_get_main_queue(), {
+                var alert = UIAlertController(title: "Film déjà ajouté", message: self.titre + " fait déjà partie de vos films !", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+            });
+            btnAjouter.enabled = false
         }
     }
     
