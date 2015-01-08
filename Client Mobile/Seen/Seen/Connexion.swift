@@ -22,8 +22,8 @@ class Connexion: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    var vPseudo : String = ""
-    var vMdp : String = ""
+    var vPseudo : String = "Python"
+    var vMdp : String = "python"
     
     @IBOutlet var pseudo: UITextField!
     @IBOutlet var mdp: UITextField!
