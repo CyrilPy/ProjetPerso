@@ -1,11 +1,10 @@
 <?php 
-
+session_start();
 if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"])){
   $quoi = $_GET["quoi"];
   $retour = '';
 
-  if (isset($_GET["qui"])){
-  $qui = $_GET["qui"];
+  $qui = $_SESSION["pseudo"];
      // Création d'un flux pour connexion à BetaSeries
     $opts = array(
       'http'=>array(
@@ -17,7 +16,7 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"])){
       )
     );
     $context = stream_context_create($opts);
-  }
+
    
   // Données nécessaires à la connexion à la BDD
   $host = "mysql.imerir.com"; // serveur mysql
@@ -27,14 +26,14 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && !is_null($_GET["quoi"])){
 
   switch ($quoi){
     case "f" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
-                  $retour = file_get_contents('http://api.betaseries.com/movies/search?nbpp=10&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
+                  $retour = file_get_contents('http://api.betaseries.com/movies/search?nbpp=100&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
                   retourFilm($retour);
                 }else{
                   header("HTTP/1.0 400 Bad Request");
                 };
     break;
     case "s" : if (isset($_GET["titre"]) && $_GET["titre"] != ''){
-                  $retour = file_get_contents('http://api.betaseries.com/shows/search?nbpp=10&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
+                  $retour = file_get_contents('http://api.betaseries.com/shows/search?nbpp=100&title='.str_replace(" ", "+", $_GET["titre"]), false, $context);
                   retourSerie($retour);
                 }else{
                   header("HTTP/1.0 400 Bad Request");
@@ -102,6 +101,9 @@ function retourSerie($data){// formatage du JSON pour le client
       $jsonClient .= '"id_bs_s":"'.$json->{'shows'}[$i]->{'id'}.'",';
       $jsonClient .= '"titre_s":"'.str_replace('"', '\"', $json->{'shows'}[$i]->{'title'}).'",';
       $jsonClient .= '"synopsis_s":"'.str_replace('"', '\"', $json->{'shows'}[$i]->{'description'}).'",';
+      $jsonClient .= '"nb_saison_s":"'.$json->{'shows'}[$i]->{'seasons'}.'",';
+      $jsonClient .= '"nb_episode_s":"'.$json->{'shows'}[$i]->{'episodes'}.'",';
+      $jsonClient .= '"date_debut_s":"'.$json->{'shows'}[$i]->{'creation'}.'",';
       $jsonClient .= '"nb_saison_s":"'.$json->{'shows'}[$i]->{'seasons'}.'",';
       $jsonClient .= '"nb_episode_s":"'.$json->{'shows'}[$i]->{'episodes'}.'",';
       $jsonClient .= '"date_debut_s":"'.$json->{'shows'}[$i]->{'creation'}.'",';

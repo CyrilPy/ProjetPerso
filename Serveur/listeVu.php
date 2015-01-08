@@ -24,14 +24,12 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["nb"]) && $_GET["
                   retourFilm($retour);
       break;
 
-      case "s" :  $retour = $req->query(' SELECT titre_s, num_sn, num_e, titre_e, date_e, synopsis_e, note_em, date_em 
-                                          FROM serie, saison, episode, episode_membre
-                                          WHERE serie.id_s=saison.id_s 
-                                          AND saison.id_sn=episode.id_sn
-                                          AND episode.id_e=episode_membre.id_e
+      case "s" :  $retour = $req->query(' SELECT titre_s, synopsis_s, date_debut_s, nb_saison, nb_episode, langue_s, statut_s
+                                          FROM serie, serie_membre
+                                          WHERE serie.id_s=serie_membre.id_s 
                                           AND id_m = '.$qui.' 
-                                          ORDER BY date_em DESC 
-                                          LIMIT '.$nb.';'); // requete sur la base de données;
+                                          ORDER BY titre_s ASC 
+                                          LIMIT 0,'.$nb.';'); // requete sur la base de données;
                   retourSerie($retour);
       break;
 
@@ -48,15 +46,12 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != '' && isset($_GET["nb"]) && $_GET["
                                           AND episode.id_e=episode_membre.id_e
                                           AND id_m = '.$qui.' 
                                           ORDER BY date_em DESC 
-                                          LIMIT '.$nb.';'); // requete sur la base de données
+                                          LIMIT 0,'.$nb.';'); // requete sur la base de données
                   retourIndex($film, $serie);
       break;
     }
 }else{
     header("HTTP/1.0 400 Bad Request");
-    if (!isset($_GET["quoi"])){echo "manque: quoi";}
-    if (!isset($_GET["qui"])){echo "manque: qui";}
-    if (!isset($_GET["nb"])){echo "manque: nb";}
 }
  
 function retourFilm($data){// formatage du JSON pour le client
@@ -67,10 +62,10 @@ function retourFilm($data){// formatage du JSON pour le client
         $jsonClient .= ',';
       }
       $jsonClient .= '{';
-      $jsonClient .= '"titre_f":"'.$row["titre_f"].'",';
+      $jsonClient .= '"titre_f":"'.str_replace('"', '\"', $row["titre_f"]).'",';
       $jsonClient .= '"date_sortie_f":"'.$row["date_sortie_f"].'",';
       $jsonClient .= '"duree_f":"'.$row["duree_f"].'",';
-      $jsonClient .= '"synopsis_f":"'.$row["synopsis_f"].'",';
+      $jsonClient .= '"synopsis_f":"'.str_replace('"', '\"', $row["synopsis_f"]).'",';   
       $jsonClient .= '"langue_f":"'.$row["langue_f"].'",';
       $jsonClient .= '"realisateur_f":"'.$row["realisateur_f"].'",';
       $jsonClient .= '"note_fm":"'.$row["note_fm"].'",';
@@ -89,16 +84,15 @@ function retourSerie($serie){// formatage du JSON pour le client
   foreach($serie as $row) {
       if ($i != 0){
         $jsonClient .= ',';
-      }
+      }// titre_s, synopsis_s, date_debut_s, nb_saison, nb_episode, langue_s, statut_s
       $jsonClient .= '{';
       $jsonClient .= '"titre_s":"'.$row["titre_s"].'",';
-      $jsonClient .= '"num_sn":"'.$row["num_sn"].'",';
-      $jsonClient .= '"num_e":"'.$row["num_e"].'",';
-      $jsonClient .= '"titre_e":"'.$row["titre_e"].'",';
-      $jsonClient .= '"date_e":"'.$row["date_e"].'",';
-      $jsonClient .= '"synopsis_e":"'.$row["synopsis_e"].'",';
-      $jsonClient .= '"note_em":"'.$row["note_em"].'",';
-      $jsonClient .= '"date_em":"'.$row["date_em"].'"';
+      $jsonClient .= '"synopsis":"'.$row["synopsis_s"].'",';
+      $jsonClient .= '"date_debut":"'.$row["date_debut_s"].'",';
+      $jsonClient .= '"nb_saison":"'.$row["nb_saison"].'",';
+      $jsonClient .= '"nb_episode":"'.$row["nb_episode"].'",';
+      $jsonClient .= '"langue":"'.$row["langue_s"].'",';
+      $jsonClient .= '"statut":"'.$row["statut_s"].'"';
       $jsonClient .= '}';
 
       $i++;

@@ -16,11 +16,12 @@
 		<table border="0" class="listeFilm" id="listeSerie" width="100%">
 			<tr class="titreTab" align="center">
 				<td width="20%"><h4>S&eacute;rie</h4></td>
+				<td width="40%"><h4>Synopsis</h4></td>
+				<td width="10%"><h4>Date debut</h4></td>
 				<td width="10%"><h4>Saison</h4></td>
 				<td width="10%"><h4>Episode</h4></td>
-				<td width="40%"><h4>Description Episode</h4></td>
-				<td width="10%"><h4>Note</h4></td>
-				<td width="10%"><h4>Vu</h4></td>
+				<td width="10%"><h4>Langue</h4></td>
+				<td width="10%"><h4>Statut</h4></td>
 			</tr>
 		</table>
 		<script type="text/javascript">
@@ -43,7 +44,7 @@
 				json = JSON.parse(json);
 
 				for (var i = 0; i < json.serie.length; i++) {
-					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].num_sn+"</td><td>"+json.serie[i].num_e+" - "+json.serie[i].titre_e+"</td><td>"+json.serie[i].synopsis_e+"</td><td align='center'>"+json.serie[i].note_em+"</td><td align='center'>"+json.serie[i].date_em+"</td></tr>")
+					$("#listeSerie").append("<tr><td align='center'>"+json.serie[i].titre_s+"</td><td align='center'>"+json.serie[i].synopsis+"</td><td>"+json.serie[i].date_debut+"</td><td>"+json.serie[i].nb_saison+"</td><td align='center'>"+json.serie[i].nb_episode+"</td><td align='center'>"+json.serie[i].langue+"</td><td align='center'>"+json.serie[i].statut+"</td></tr>")
 				}
 			}
 		</script>

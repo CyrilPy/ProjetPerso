@@ -20,7 +20,7 @@
 				$.ajax({
 					
 					type: "GET",
-					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre="+req+"&qui="+pseudo,
+					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=f&titre="+req,
 					dataType : "html",
 					contentType: 'Content-type: text/plain; charset=iso-8859-15',
 					success:function(data){
@@ -51,7 +51,7 @@
 								tabFilm[json.film[i].id_bs_f]["duree"]=json.film[i].duree_f;
 								tabFilm[json.film[i].id_bs_f]["langue"]=json.film[i].langue_f;
 
-								$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"f\")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
+								$("#listeFilm").append("<tr><td align='center'><button type='button' class='btn btn-default btn-xs' onclick='ajoute(\"f\", "+json.film[i].id_bs_f+")'><span class='glyphicon glyphicon-star-empty' aria-hidden='true'></span></button><button type='button' class='btn btn-default btn-xs' onclick='$(\"#f"+i+"\").fadeToggle(\"fast\");'><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></button></td><td>"+json.film[i].titre_f+"</td><td>"+json.film[i].titre_original_f+"</td><td>"+json.film[i].realisateur_f+"</td><td align='center'>"+json.film[i].date_sortie_f+"</td><td align='center'>"+Math.floor(json.film[i].duree_f/60)+"</td><td align='center'>"+json.film[i].langue_f+"</td></tr><tr id='f"+i+"' style='display:none;background:gray;' ><td colspan='7'>"+json.film[i].synopsis_f+"</td></tr>");
 							}
 						}
 					}
@@ -60,7 +60,7 @@
 				// LISTE DES SERIES
 				$.ajax({
 					type: "GET",
-					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=s&titre="+req+"&qui="+pseudo,
+					url: "http://perso.imerir.com/cpy/Seen/recherche.php?quoi=s&titre="+req,
 					dataType : "html",
 					contentType: 'Content-type: text/plain; charset=iso-8859-15',
 					success:function(data){

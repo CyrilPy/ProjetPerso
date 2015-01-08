@@ -15,31 +15,64 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
       case "f" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != '' && isset($_GET["titre_f"]) && $_GET["titre_f"] != '' && isset($_GET["titre_original"]) && $_GET["titre_original"] != '' && isset($_GET["synopsis"]) && $_GET["synopsis"] != '' && isset($_GET["realisateur"]) && $_GET["realisateur"] != '' && isset($_GET["date_sortie"]) && $_GET["date_sortie"] != '' && isset($_GET["duree"]) && $_GET["duree"] != '' && isset($_GET["langue"]) && $_GET["langue"] != ''){
 
                     $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
-                    $retour = $req->exec('INSERT IGNORE film (id_bs_f, titre_f, titre_original_f, date_sortie_f, duree_f, synopsis_f, langue_f, realisateur_f) VALUES ('.$_GET["id_bs"].', "'.$_GET["titre_f"].'", "'.$_GET["titre_original"].'", '.$_GET["date_sortie"].', "'.$_GET["duree"].'", "'.$_GET["synopsis"].'", "'.$_GET["langue"].'", "'.$_GET["realisateur"].'");');
-
+                    $retour = $req->exec('INSERT IGNORE film (
+                                              id_bs_f ,
+                                              titre_f ,
+                                              titre_original_f ,
+                                              date_sortie_f ,
+                                              duree_f ,
+                                              synopsis_f ,
+                                              langue_f ,
+                                              realisateur_f
+                                              )VALUES(
+                                              '.$_GET["id_bs"].', 
+                                              "'.$_GET["titre_f"].'", 
+                                              "'.$_GET["titre_original"].'", 
+                                              '.$_GET["date_sortie"].', 
+                                              '.$_GET["duree"].', 
+                                              "'.$_GET["synopsis"].'", 
+                                              "'.$_GET["langue"].'", 
+                                              "'.$_GET["realisateur"].'");');
 
                     $id = $req->query('SELECT id_f FROM film WHERE id_bs_f = '.$_GET["id_bs"].';');
                     $id = $id->fetchAll();
 
-                    $retour = $req->exec('INSERT IGNORE film_membre (id_f, id_m, ajoute_fm) VALUES ('.$id[0]["id_s"].', '.$_SESSION["id"].', 1);');
+                    $retour = $req->exec('INSERT IGNORE film_membre (id_f, id_m, ajoute_fm) VALUES ('.$id[0]["id_f"].', '.$_SESSION["id"].', 1);');
 
+                    retourFilm($retour);
                   }else{
                     header("HTTP/1.0 400 Bad Request");
                   };
       break;
 
-      case "s" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != '' && isset($_GET["titre_s"]) && $_GET["titre_s"] != '' && isset($_GET["date_debut"]) && $_GET["date_debut"] != '' && isset($_GET["langue"]) && $_GET["langue"] != '' && isset($_GET["statut"]) && $_GET["statut"] != '' && isset($_GET["synopsis"]) && $_GET["synopsis"] != ''){
+      case "s" : if (isset($_GET["id_bs"]) && $_GET["id_bs"] != '' && isset($_GET["titre_s"]) && $_GET["titre_s"] != '' && isset($_GET["date_debut"]) && $_GET["date_debut"] != '' && isset($_GET["langue"]) && $_GET["langue"] != '' && isset($_GET["statut"]) && $_GET["statut"] != '' && isset($_GET["synopsis"]) && $_GET["synopsis"] != '' && isset($_GET["nb_saison"]) && $_GET["nb_saison"] != '' && isset($_GET["nb_episode"]) && $_GET["nb_episode"] != '' ){
 
                     $req = new PDO('mysql:host='.$host.';dbname='.$db, $user, $pass); // accès à la base de données
-                    $retour = $req->exec('INSERT IGNORE serie (id_bs_s, titre_s, synopsis_s, date_debut_s, langue_s, statut_s) VALUES ('.$_GET["id_bs"].', "'.$_GET["titre_s"].'", "'.$_GET["synopsis"].'", '.$_GET["date_debut"].', "'.$_GET["langue"].'", "'.$_GET["statut"].'");');
-
+                    $retour = $req->exec('INSERT IGNORE serie (
+                                            id_bs_s, 
+                                            titre_s, 
+                                            synopsis_s, 
+                                            date_debut_s, 
+                                            nb_saison, 
+                                            nb_episode, 
+                                            langue_s, 
+                                            statut_s
+                                          )VALUES(
+                                            '.$_GET["id_bs"].',
+                                            "'.$_GET["titre_s"].'",
+                                            "'.$_GET["synopsis"].'",
+                                            '.$_GET["date_debut"].',
+                                            '.$_GET["nb_saison"].',
+                                            '.$_GET["nb_episode"].',
+                                            "'.$_GET["langue"].'",
+                                            "'.$_GET["statut"].'");');
 
                     $id = $req->query('SELECT id_s FROM serie WHERE id_bs_s = '.$_GET["id_bs"].';');
                     $id = $id->fetchAll();
 
                     $retour = $req->exec('INSERT IGNORE serie_membre (id_s, id_m, ajoute_sm) VALUES ('.$id[0]["id_s"].', '.$_SESSION["id"].', 1);');
 
-                      
+                    retourSerie($retour); 
                   }else{
                     header("HTTP/1.0 400 Bad Request");
                   };
@@ -58,12 +91,24 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
   header("HTTP/1.0 400 Bad Request");
 }
  
-function retourFilm(){// formatage du JSON pour le client
-
+function retourFilm($data){// formatage du JSON pour le client
+if ($data == 1){
+    header("HTTP/1.0 200 OK");
+    echo '{"code":"1"}';
+  }else{
+    header("HTTP/1.0 500 Internal Server Error");
+    echo '{"code":"0"}';
+  }
 }
 
-function retourSerie(){// formatage du JSON pour le client
- 
+function retourSerie($data){// formatage du JSON pour le client
+ if ($data == 1){
+    header("HTTP/1.0 200 OK");
+    echo '{"code":"1"}';
+  }else{
+    header("HTTP/1.0 500 Internal Server Error");
+    echo '{"code":"0"}';
+  }
 }
 
 function retourMembre($data){ // formatage du JSON pour le client
