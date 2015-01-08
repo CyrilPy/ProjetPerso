@@ -19,6 +19,7 @@
 		0C1F63B01A5BE325004B3586 /* Films.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1F63AF1A5BE325004B3586 /* Films.swift */; };
 		0C1F63B21A5BE367004B3586 /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1F63B11A5BE367004B3586 /* Series.swift */; };
 		0C1F63B41A5BE37F004B3586 /* Compte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1F63B31A5BE37F004B3586 /* Compte.swift */; };
+		0C59B2A51A5D9B0F009A01F4 /* FilmsDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C59B2A41A5D9B0F009A01F4 /* FilmsDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		0C1F63AF1A5BE325004B3586 /* Films.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Films.swift; sourceTree = "<group>"; };
 		0C1F63B11A5BE367004B3586 /* Series.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
 		0C1F63B31A5BE37F004B3586 /* Compte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compte.swift; sourceTree = "<group>"; };
+		0C59B2A41A5D9B0F009A01F4 /* FilmsDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmsDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				0C1F63AB1A5B0B9A004B3586 /* Acceuil.swift */,
 				0C1F63AD1A5BE2FD004B3586 /* Recherche.swift */,
 				0C1F63AF1A5BE325004B3586 /* Films.swift */,
+				0C59B2A41A5D9B0F009A01F4 /* FilmsDetails.swift */,
 				0C1F63B11A5BE367004B3586 /* Series.swift */,
 				0C1F63B31A5BE37F004B3586 /* Compte.swift */,
 				0C1F638D1A5ACD05004B3586 /* Main.storyboard */,
@@ -237,6 +240,7 @@
 				0C1F63AE1A5BE2FD004B3586 /* Recherche.swift in Sources */,
 				0C1F63AC1A5B0B9A004B3586 /* Acceuil.swift in Sources */,
 				0C1F638A1A5ACD05004B3586 /* AppDelegate.swift in Sources */,
+				0C59B2A51A5D9B0F009A01F4 /* FilmsDetails.swift in Sources */,
 				0C1F63B21A5BE367004B3586 /* Series.swift in Sources */,
 				0C1F63B41A5BE37F004B3586 /* Compte.swift in Sources */,
 			);
@@ -436,6 +440,7 @@
 				0C1F63A51A5ACD05004B3586 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C1F63A61A5ACD05004B3586 /* Build configuration list for PBXNativeTarget "SeenTests" */ = {
 			isa = XCConfigurationList;
@@ -444,6 +449,7 @@
 				0C1F63A81A5ACD05004B3586 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

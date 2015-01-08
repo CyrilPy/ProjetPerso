@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class Connexion: UIViewController {
+class Connexion: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +48,10 @@ class Connexion: UIViewController {
             }
         }
         task.resume()
-        
-        
     }
-    
+    func textFieldShouldReturn(textField: UITextField!) -> Bool // called when 'return' key pressed. return NO to ignore.
+    {
+        textField.resignFirstResponder()
+        return true;
+    }
 }

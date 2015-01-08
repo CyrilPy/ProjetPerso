@@ -21,6 +21,12 @@ class Series: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    @IBAction func RetourAcceuil(sender: UIBarButtonItem) {
+        dispatch_async(dispatch_get_main_queue(), {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("Acceuil") as Acceuil
+            self.presentViewController(vc, animated: true, completion: nil)
+        });
+    }
 }
 

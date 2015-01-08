@@ -9,18 +9,75 @@
 import UIKit
 import Foundation
 
-class Films: UIViewController {
+class Films: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+    
+    @IBOutlet weak var tableView: UITableView!
+    var items: NSDictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
+        self.items = parseJSON(getJSON("http://perso.imerir.com/cpy/Seen/listeVu.php?quoi=f&nb=100"))
+        
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+       
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func getJSON(urlToRequest: String) -> NSData{
+        return NSData(contentsOfURL: NSURL(string: urlToRequest)!)!
     }
     
+    func parseJSON(inputData: NSData) -> NSDictionary{
+        var error: NSError?
+        var films: NSDictionary = NSJSONSerialization.JSONObjectWithData(inputData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        return films
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.items["film"]!.count;
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+        
+        if let navn = self.items["film"]![indexPath.row]["titre_f"] as? NSString {
+            cell.textLabel?.text = navn
+        } else {
+            cell.textLabel?.text = "No Name"
+        }
+        
+        if let desc = self.items["film"]![indexPath.row]["synopsis_f"] as? NSString {
+            cell.detailTextLabel?.text = desc
+        }
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+        dispatch_async(dispatch_get_main_queue(), {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("FilmsDetails") as FilmsDetails
+            vc.pagePrecedente = "films"
+            vc.titre = self.items["film"]![indexPath.row]["titre_f"] as String
+            vc.date = self.items["film"]![indexPath.row]["date_sortie_f"] as String
+            vc.duree = self.items["film"]![indexPath.row]["duree_f"] as String
+            vc.langue = self.items["film"]![indexPath.row]["langue_f"] as String
+            vc.realisateur = self.items["film"]![indexPath.row]["realisateur_f"] as String
+            vc.synopsis = self.items["film"]![indexPath.row]["synopsis_f"] as String
+            
+            self.presentViewController(vc, animated: true, completion: nil)
+        });
+    }
+
+        @IBAction func RetourAcceuil(sender: UIBarButtonItem) {
+        dispatch_async(dispatch_get_main_queue(), {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("Acceuil") as Acceuil
+            self.presentViewController(vc, animated: true, completion: nil)
+        });
+    }
 }
 
