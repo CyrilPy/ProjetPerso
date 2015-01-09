@@ -114,7 +114,7 @@ function ajoute(quoi, id_bs){
 	}else if (quoi == "f"){
 		$.ajax({
 			type: "GET",
-			url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs+"&titre_f="+tabFilm[id_bs]["titre"]+"&titre_original="+tabFilm[id_bs]["titre_original"]+"&synopsis="+tabFilm[id_bs]["synopsis"]+"&realisateur="+tabFilm[id_bs]["realisateur"]+"&date_sortie="+tabFilm[id_bs]["date_sortie"]+"&duree="+tabFilm[id_bs]["duree"]+"&langue="+tabFilm[id_bs]["langue"],
+			url: "http://perso.imerir.com/cpy/Seen/insertion.php?quoi="+quoi+"&id_bs="+id_bs+"&titre_f="+tabFilm[id_bs]["titre"]+"&titre_original="+tabFilm[id_bs]["titre_original"]+"&synopsis="+tabFilm[id_bs]["synopsis"].replace("\"","\\\"")+"&realisateur="+tabFilm[id_bs]["realisateur"]+"&date_sortie="+tabFilm[id_bs]["date_sortie"]+"&duree="+tabFilm[id_bs]["duree"]+"&langue="+tabFilm[id_bs]["langue"],
 			dataType : "html",
 			contentType: 'Content-type: text/plain; charset=iso-8859-15',
 			success:function(data){

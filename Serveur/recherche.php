@@ -126,10 +126,7 @@ function retourMembre($data){ // formatage du JSON pour le client
         }
         $jsonClient .= '{';
         $jsonClient .= '"id_mbr":"'.$row["id_mbr"].'",';
-        $jsonClient .= '"nom_mbr":"'.$row["nom_mbr"].'",';
-        $jsonClient .= '"prenom_mbr":"'.$row["prenom_mbr"].'",';
-        $jsonClient .= '"pseudo_mbr":"'.$row["pseudo_mbr"].'",';
-        $jsonClient .= '"mail_mbr":"'.$row["mail_mbr"].'"';
+        $jsonClient .= '"pseudo_mbr":"'.$row["pseudo_mbr"].'"';
         $jsonClient .= '}';
 
         $i++;

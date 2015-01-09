@@ -87,7 +87,7 @@ function retourSerie($serie){// formatage du JSON pour le client
       }// titre_s, synopsis_s, date_debut_s, nb_saison, nb_episode, langue_s, statut_s
       $jsonClient .= '{';
       $jsonClient .= '"titre_s":"'.$row["titre_s"].'",';
-      $jsonClient .= '"synopsis":"'.$row["synopsis_s"].'",';
+      $jsonClient .= '"synopsis":"'.str_replace('"', '\"', $row["synopsis_s"]).'",';
       $jsonClient .= '"date_debut":"'.$row["date_debut_s"].'",';
       $jsonClient .= '"nb_saison":"'.$row["nb_saison"].'",';
       $jsonClient .= '"nb_episode":"'.$row["nb_episode"].'",';
@@ -109,10 +109,10 @@ function retourIndex($film, $serie){ // formatage du JSON pour le client
         $jsonClient .= ',';
       }
       $jsonClient .= '{';
-      $jsonClient .= '"titre_f":"'.$row["titre_f"].'",';
+      $jsonClient .= '"titre_f":"'.str_replace('"', '\"', $row["titre_f"]).'",';
       $jsonClient .= '"date_sortie_f":"'.$row["date_sortie_f"].'",';
       $jsonClient .= '"duree_f":"'.$row["duree_f"].'",';
-      $jsonClient .= '"synopsis_f":"'.$row["synopsis_f"].'",';
+      $jsonClient .= '"synopsis_f":"'.str_replace('"', '\"', $row["synopsis_f"]).'",';
       $jsonClient .= '"langue_f":"'.$row["langue_f"].'",';
       $jsonClient .= '"realisateur_f":"'.$row["realisateur_f"].'",';
       $jsonClient .= '"note_fm":"'.$row["note_fm"].'",';
@@ -133,7 +133,7 @@ function retourIndex($film, $serie){ // formatage du JSON pour le client
       $jsonClient .= '"num_e":"'.$row["num_e"].'",';
       $jsonClient .= '"titre_e":"'.$row["titre_e"].'",';
       $jsonClient .= '"date_e":"'.$row["date_e"].'",';
-      $jsonClient .= '"synopsis_e":"'.$row["synopsis_e"].'",';
+      $jsonClient .= '"synopsis_e":"'.str_replace('"', '\"', $row["synopsis_e"]).'",';
       $jsonClient .= '"note_em":"'.$row["note_em"].'",';
       $jsonClient .= '"date_em":"'.$row["date_em"].'"';
       $jsonClient .= '}';

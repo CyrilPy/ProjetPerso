@@ -26,9 +26,9 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
                                               realisateur_f
                                               )VALUES(
                                               '.$_GET["id_bs"].', 
-                                              "'.$_GET["titre_f"].'", 
-                                              "'.$_GET["titre_original"].'", 
-                                              '.$_GET["date_sortie"].', 
+                                              "'.str_replace("\"", "\\\"", $_GET["titre_f"]).'", 
+                                              "'.str_replace("\"", "\\\"", $_GET["titre_original"]).'", 
+                                              \''.$_GET["date_sortie"].'\', 
                                               '.$_GET["duree"].', 
                                               "'.$_GET["synopsis"].'", 
                                               "'.$_GET["langue"].'", 
@@ -59,8 +59,8 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
                                             statut_s
                                           )VALUES(
                                             '.$_GET["id_bs"].',
-                                            "'.$_GET["titre_s"].'",
-                                            "'.$_GET["synopsis"].'",
+                                            "'.str_replace("\"", "\\\"", $_GET["titre_s"]).'",
+                                            "'.str_replace("\"", "\\\"", $_GET["synopsis"]).'",
                                             '.$_GET["date_debut"].',
                                             '.$_GET["nb_saison"].',
                                             '.$_GET["nb_episode"].',
@@ -92,63 +92,32 @@ if (isset($_GET["quoi"]) && $_GET["quoi"] != ''){
 }
  
 function retourFilm($data){// formatage du JSON pour le client
+header("HTTP/1.0 200 OK");
+
 if ($data == 1){
-    header("HTTP/1.0 200 OK");
     echo '{"code":"1"}';
   }else{
-    header("HTTP/1.0 500 Internal Server Error");
     echo '{"code":"0"}';
   }
 }
 
 function retourSerie($data){// formatage du JSON pour le client
- if ($data == 1){
-    header("HTTP/1.0 200 OK");
+ header("HTTP/1.0 200 OK");
+
+if ($data == 1){
     echo '{"code":"1"}';
   }else{
-    header("HTTP/1.0 500 Internal Server Error");
     echo '{"code":"0"}';
   }
 }
 
 function retourMembre($data){ // formatage du JSON pour le client
-  if ($data == 1){
-    header("HTTP/1.0 200 OK");
+  header("HTTP/1.0 200 OK");
+
+if ($data == 1){
     echo '{"code":"1"}';
   }else{
-    header("HTTP/1.0 500 Internal Server Error");
     echo '{"code":"0"}';
   }
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
